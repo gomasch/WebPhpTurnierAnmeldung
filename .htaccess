@@ -1,0 +1,7 @@
+<Files "turnieranmeldungen.csv">
+Order deny,allow
+Deny from all
+</Files>
+RewriteEngine On
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteRule .* logic.php [L,QSA]
