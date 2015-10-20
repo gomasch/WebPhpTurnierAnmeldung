@@ -2,7 +2,7 @@
 
 function anmeldungFormular($f3)
 {
-	//formular 
+    //formular 
     return "
 <form action='anmeldung' method='post'>
 <table cellspacing='0' cellpadding='5' border='0'>
@@ -214,10 +214,17 @@ function anmeldungAuswerten($f3) {
     return "<font color='green'>Du hast dich erfolgreich angemeldet <a href='liste'>(Anzeigen)</a></font>";
 }
 
-// this function removes all commas
+// this function removes all commas, HTML stuff and limit length
 function sanitize($string)
 {
-    return str_replace(",", "", htmlspecialchars($string));
+    $result = str_replace(",", "", htmlspecialchars($string));
+
+    if (strlen($result) > 50)
+    {   // too big, limit length
+        $result = substr($result, 0, 50);
+    }
+   
+    return $result;
 }
 
 function buildSorterForRank($ranks)
