@@ -3,5 +3,13 @@ Order deny,allow
 Deny from all
 </Files>
 RewriteEngine On
+
+# serve static files from subdirectory design
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} ^(.*)/([^/]+)$
+RewriteCond %1/design/%2 -f
+RewriteRule ^.*$ design/%2 [L]
+
+# Mainlogic
 RewriteCond %{REQUEST_FILENAME} !-f
 RewriteRule .* logic.php [L,QSA]

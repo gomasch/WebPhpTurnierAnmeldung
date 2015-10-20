@@ -20,12 +20,16 @@ $f3->set('RANKS', array('7d', '6d', '5d', '4d', '3d', '2d', '1d',
     '21k', '22k', '23k', '24k', '25k', '26k', '27k', '28k', '29k', '30k' 
     ));
 
+$f3->set('URL_1', '.');
+$f3->set('URL_2', 'anmeldung');
+$f3->set('URL_3', 'liste');
+
 // Haupt-Seite
 $f3->route(
 	array('GET /', 'GET /index.html'),
     function($f3) 
     {
-    	echo Template::instance()->render('template_index.html');
+    	echo Template::instance()->render('design/template_index.html');
     }
 );
 
@@ -35,7 +39,7 @@ $f3->route('GET /anmeldung',
     {
         require('logic_anmeldung.php');
         $f3->set('MAIN_CONTENT_RAW', anmeldungFormular($f3)); // ohne escaping
-    	echo Template::instance()->render('template_anmeldung.html');
+    	echo Template::instance()->render('design/template_anmeldung.html');
     }
 );
 
@@ -46,7 +50,7 @@ $f3->route(
     {
         require('logic_anmeldung.php');
         $f3->set('MAIN_CONTENT_RAW', anmeldungAuswerten($f3)); // ohne escaping
-    	echo Template::instance()->render('template_anmeldung.html');
+    	echo Template::instance()->render('design/template_anmeldung.html');
     }
 );
 
@@ -56,7 +60,7 @@ $f3->route('GET /liste',
     {
         require('logic_anmeldung.php');
         $f3->set('MAIN_CONTENT_RAW', tabelleAusgeben($f3)); // ohne escaping
-    	echo Template::instance()->render('template_list.html');
+    	echo Template::instance()->render('design/template_list.html');
     }
 );
 
@@ -65,7 +69,7 @@ $f3->route('GET /liste',
 // 	function($f3){
 //     	setDefaultProperties($f3);
 //         $f3->set('MAIN_CONTENT', 'Seite nicht gefunden');
-//     	echo Template::instance()->render('template_anmeldung.html');
+//     	echo Template::instance()->render('design/template_anmeldung.html');
 // 	}
 //);
 
