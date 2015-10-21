@@ -20,11 +20,12 @@ $f3->set('RANKS', array('7d', '6d', '5d', '4d', '3d', '2d', '1d',
     '21k', '22k', '23k', '24k', '25k', '26k', '27k', '28k', '29k', '30k' 
     ));
 
-$f3->set('URL_1', '.');
-$f3->set('URL_2', 'anmeldung');
-$f3->set('URL_3', 'liste');
+// Variablen für die in den Templates zu verwendenden URLs zu den Seiten
+$f3->set('URL_1', '.'); // Link zur Ausschreibungsseite
+$f3->set('URL_2', 'anmeldung'); // Link zum Anmelde-Formular
+$f3->set('URL_3', 'liste'); // Link zur Liste der erfolgreichen Anmeldungen
 
-// Haupt-Seite
+// Haupt-Seite, Ausschreibung
 $f3->route(
 	array('GET /', 'GET /index.html'),
     function($f3) 
