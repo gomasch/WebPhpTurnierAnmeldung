@@ -1,5 +1,38 @@
 <?php
 
+class CsvFile {
+    private $file = '';
+
+    public function __construct($fileName) {
+        $this->file = $fileName;
+    }
+
+    public function exists() {
+        return file_exists($this->file);
+    }
+
+    public function readAll()
+    {
+        $tableData = array();
+
+        $csv = fopen($this->file,'r');
+        while (($data = fgetcsv($csv, 1000, ",")) !== FALSE) {
+            array_push($tableData, $data);
+        }
+        fclose($csv);
+
+        return $tableData;
+    }
+
+    public function writeAll($tableData) {
+        $wrtALL = fopen($this->file,'w');
+        foreach ($tableData as $singleLine) {
+            fputcsv($wrtALL, $singleLine);
+        }
+        fclose($wrtALL);
+    }
+}
+
 function anmeldungFormular($f3)
 {
     //formular 
@@ -172,18 +205,17 @@ function anmeldungAuswerten($f3) {
 
     $tableData = array();
 
-    $file = $f3->get('FILENAME_CSVRESULT');
-    if(file_exists($file))
-    {   // file exists, read all
-        $csv = fopen($file,'r');
-        while (($data = fgetcsv($csv, 1000, ",")) !== FALSE) {
-            array_push($tableData, $data);
-        }
-        fclose($csv);
+    $csvFile = new CsvFile($f3->get('FILENAME_CSVRESULT'));
+    if($csvFile->exists()) {   
+        // file exists, read all
+        $tableData = $csvFile->readAll();
+    }
+    else {
+        array_push($tableData, $tablehead);
     }
 
     // add new entry
-    array_push($tableData, array(
+    $newEntry = array(
         $strName,
         $strPrename,
         $strTown,
@@ -197,18 +229,14 @@ function anmeldungAuswerten($f3) {
         $strNachmittagSem,
         $strAbendSem,
         $strIP,
-        $strDateAndTime));
+        $strDateAndTime);
+    array_push($tableData, $newEntry);
 
     // sort after rank
     usort($tableData, buildSorterForRank($f3->get('RANKS')));
 
     // write all data
-    $wrtALL = fopen($file,'w');
-    foreach ($tableData as $singleLine) {
-        fputcsv($wrtALL, $singleLine);
-    }
-    fwrite($wrtALL, $allranks);
-    fclose($wrtALL);
+    $csvFile->writeAll($tableData);
 
     // SUCCESS
     return "<font color='green'>Du hast dich erfolgreich angemeldet <a href='liste'>(Anzeigen)</a></font>";
@@ -238,66 +266,98 @@ function tabelleAusgeben($f3)
 {
     $file = $f3->get('FILENAME_CSVRESULT');
     
-    $showall = $_GET[$f3->get('SHOWALL_KEY')] == $f3->get('SHOWALL_PASSWD'); // password check to show everything
-
     if (file_exists($file)) 
     {
-        $playerCount = 0;
-        $csv    =   fopen($file,'r');
-        $strList    = "<table border='1' cellspacing='0' cellpadding='3' bordercolor='#000000'>";
-        //reading csv-file
-        while ( ($data = fgetcsv ($csv, 1000, ",")) != FALSE ) 
-        {
-            $playerCount = $playerCount + 1;
-            //here you can delete or insert your fields of the csv-file
-            //first field in csv-file is the same as $data[0], 
-            $strList    .=  "<tr>";
-            $strList    .=  "<td width='100'>".$data[0]."&nbsp;</td>";//Name
-            $strList    .=  "<td width='100'>".$data[1]."&nbsp;</td>";//Vorname
-            $strList    .=  "<td width='100'>".$data[2]."&nbsp;</td>";//Stadt
-            if ($showall)
-            {
-                $strList    .=  "<td width='100'>".$data[3]."</td>";//E-Mail
-                $strList    .=  "<td width='100'>".$data[4]."&nbsp;</td>";//DGOB
-            }
-            $strList    .=  "<td width='30'>".$data[5]."&nbsp;</td>";//Rang
-            if ($showall)
-            {
-                $strList    .=  "<td align='center' width='50'>".$data[6]."&nbsp;</td>";//keine Übernachtung
-                $strList    .=  "<td align='center' width='50'>".$data[7]."&nbsp;</td>";//Übernachtung ab Freitag
-                $strList    .=  "<td align='center' width='50'>".$data[8]."&nbsp;</td>";//Übernachtung ab Samstag
-            }
-            $strList    .=  "<td width='30'>".$data[9]."&nbsp;</td>";//Teilnahme Turnier
-            $strList    .=  "<td width='30'>".$data[10]."&nbsp;</td>";//Teilnahme Nachmittagseminar
-            $strList    .=  "<td width='30'>".$data[11]."&nbsp;</td>";//Teilnahme Abendseminar
-            if ($showall)
-            {
-                $strList    .=  "<td align='center' width='50'>".$data[12]."&nbsp;</td>";//IP
-                $strList    .=  "<td align='center' width='50'>".$data[13]."&nbsp;</td>";//Datum und Zeit
-                if($delete==1)
-                {
-                    $strList    .=  "<td><a href='show.php?$SHOWALL_GETKEY=$SHOWALL_GETPASSWD&del=$data[0];$data[1];$data[2];$data[3]'>L&ouml;schen</a></td>";
+        $csvFile = new CsvFile($file);
+
+        $showall = $_GET[$f3->get('SHOWALL_KEY')] == $f3->get('SHOWALL_PASSWD'); // password check to show everything
+
+        $strOutput = "";
+        // try to remove item?
+        if ($showall) {
+            $del = $_GET['del'];
+            if ($del != "") {
+                // remove something
+                $delData = explode(";", $del);
+                $delIndex = $delData[0];
+                $delCount = $delData[1];
+
+                $tableData = $csvFile->readAll();
+                if (count($tableData) == $delCount) {
+                    // number OK -> remove index
+                    array_splice($tableData, $delIndex, 1); 
+
+                    $csvFile->writeAll($tableData);
+
+                    $strOutput .= "Einer entfernt<br>";
+
                 }
-                $delete = 1;
+                else {
+                    $strOutput .= "Anzahl stimmt nicht<br>";
+                }
             }
-            $strList    .=  "</tr>";
         }
-        $strList    .=  "</table>";
-        fclose ($csv);
-        $strList .= "<br>Es sind $playerCount Spieler angemeldet.\n";
+
+        // read data
+        $tableData = $csvFile->readAll();
+        $playerCount = count($tableData);
+
+        $strOutput .= "<table border='1' cellspacing='0' cellpadding='3' bordercolor='#000000'>";
+
+        $rowIndex = 0;
+        //reading csv-file
+        foreach ($tableData as $data) {
+            //first field in csv-file is the same as $data[0], 
+            $strOutput    .=  "<tr>";
+            $strOutput    .=  "<td width='100'>".$data[0]."&nbsp;</td>";//Name
+            $strOutput    .=  "<td width='100'>".$data[1]."&nbsp;</td>";//Vorname
+            $strOutput    .=  "<td width='100'>".$data[2]."&nbsp;</td>";//Stadt
+            if ($showall)
+            {
+                $strOutput    .=  "<td width='100'>".$data[3]."</td>";//E-Mail
+                $strOutput    .=  "<td width='100'>".$data[4]."&nbsp;</td>";//DGOB
+            }
+            $strOutput    .=  "<td width='30'>".$data[5]."&nbsp;</td>";//Rang
+            if ($showall)
+            {
+                $strOutput    .=  "<td align='center' width='50'>".$data[6]."&nbsp;</td>";//keine Übernachtung
+                $strOutput    .=  "<td align='center' width='50'>".$data[7]."&nbsp;</td>";//Übernachtung ab Freitag
+                $strOutput    .=  "<td align='center' width='50'>".$data[8]."&nbsp;</td>";//Übernachtung ab Samstag
+            }
+            $strOutput    .=  "<td width='30'>".$data[9]."&nbsp;</td>";//Teilnahme Turnier
+            $strOutput    .=  "<td width='30'>".$data[10]."&nbsp;</td>";//Teilnahme Nachmittagseminar
+            $strOutput    .=  "<td width='30'>".$data[11]."&nbsp;</td>";//Teilnahme Abendseminar
+            if ($showall)
+            {
+                $strOutput    .=  "<td align='center' width='50'>".$data[12]."&nbsp;</td>";//IP
+                $strOutput    .=  "<td align='center' width='50'>".$data[13]."&nbsp;</td>";//Datum und Zeit
+                if ($rowIndex > 0) {
+                    $strOutput .=  "<td><a href='" . $f3->get('URL_3') . "?" . 
+                        $f3->get('SHOWALL_KEY') . "=" . $_GET[$f3->get('SHOWALL_KEY')] . "&" . 
+                        "del=" . $rowIndex . ";" . $playerCount."'>L&ouml;schen</a></td>";
+                }
+                else {
+                    $strOutput .=  "<td>Bearbeiten</td>";
+                }
+            }
+            $strOutput    .=  "</tr>";
+
+            $rowIndex++;
+        }
+        $strOutput    .=  "</table>";
+        
+        $strOutput .= "<br>Es sind $playerCount Spieler angemeldet.\n";
         
         if ($showall)
         {
-            $strList .= "<p>Daten als reine csv-datei: <hr><pre>\n";
+            $strOutput .= "<p>Daten als reine csv-datei: <hr><pre>\n";
             $csv    =   fopen($file,'r');
-            $strList .= fread($csv, filesize($file));
+            $strOutput .= fread($csv, filesize($file));
             fclose ($csv);
-            $strList .= "</pre><hr>\n";
+            $strOutput .= "</pre><hr>\n";
          }
     } else {
-        $strList = "noch ist niemand angemeldet.";
+        $strOutput = "noch ist niemand angemeldet.";
     }
-    return $strList;
+    return $strOutput;
 }
-
-?>
