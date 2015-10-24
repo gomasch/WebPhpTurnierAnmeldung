@@ -14,7 +14,12 @@ Dies ist PHP-Quellcode für eine einfache Webseite mit Online-Anmeldung für ein
 * Ausschreibungstext in design/template_index.html anpassen und eventuell zusätzliche Dateien (z.B. PDF-Version der Ausschreibung) im design-Verzeichnis ablegen und verlinken vom Anmeldungstext.
 
 # Hochladen
-Nach den Anpassungen sollten alle Dateien (auch die .htaccess-Datei!) hochgeladen werden. Die Dateien sollten alle gelesen werden.
+Nach den Anpassungen sollten hochgeladen werden: 
+* .htaccess-Datei
+* .php-Dateien
+* Lib-Verzeichnis
+* Design-Verzeichnis (inkl. deiner Anpassungen)
+
 Vorraussetzungen: Es sollten PHP und mod_rewrite unterstützt werden, das ist bei den vielen Basis-Angeboten von Web-Hostern unterstützt. Gespeichert wird in eine lokale CSV-Datei, es ist kein Datenbank nötig.
 
 # Anmeldungen anschauen
@@ -35,15 +40,13 @@ Die Details der Anmeldungen kann man bei Kenntnis des in SHOWALL_PASSWD angelegt
 # Einschränkungen
 * Allgemein gilt:
   * Dies ist für kleine Turniere mit wenigen Anmeldungen (unter 200) gedacht.
-  * Programmiert wurde mit etlichen Hintergedanken, aber nicht von erfahrenen PHP-Programmierern.
-  * Basis ist nun das PHP Microframework F3 http://fatfreeframework.com/. Es wurden einfach die zwei verwendeten PHP-Dateien hier direkt eingebunden, ohne Management der Abhängigkeiten durch Composer beispielsweise.
-* Skalierbarkeit:
   * Es wird angenommen, dass nur wenige Personen pro Tag sich anmelden und praktisch nie zwei Leute exakt gleichzeitig auf "Absenden" drücken.
-  * Es wird angenommen, dass sich nicht tausende Leute anmelden.
+  * Basis ist nun das PHP Microframework F3 http://fatfreeframework.com/. Es wurden einfach die zwei verwendeten PHP-Dateien hier direkt eingebunden, ohne Management der Abhängigkeiten durch Composer beispielsweise.
 * Sicherheit: 
   * Die Eingaben werden gefiltert, d.h. durch die Anmeldung kann (hoffentlich) kein HTML/Javascript-Code in die Anmeldung eingeschlichen werden.
   * Es gibt keine Überprüfung auf Plausibilität oder Duplikate. D.h. Leute können bewusst falsche Angaben machen oder die Anmeldung mit sinnlosen Daten fluten und stören.
   * Es gibt keinen Schutz gegen DDOS oder gegen automatisierte falsche Anmeldungen.
+
 # Geschichte
   * Die allererste Version (noch ohne F3) wurde von Stefan Reinke nach Vorgaben von Martin Schmidt für mvgo.de vor vielen Jahren (ca. 2008?) programmiert. Dieser Basis-Code wurde für viele Go-Turniere in M/V 2008-2015 von Martin angepasst und eingesetzt.
   * Diese Version ist der Versuch, die Code-Basis zu modernisieren, Design- und Logik-Anpassungen einfacher vornehmen zu können.
