@@ -20,10 +20,14 @@ Nach den Anpassungen sollten hochgeladen werden:
 * Lib-Verzeichnis
 * Design-Verzeichnis (inkl. deiner Anpassungen)
 
-Vorraussetzungen: Es sollten PHP und mod_rewrite unterstützt werden, das ist bei den vielen Basis-Angeboten von Web-Hostern unterstützt. Gespeichert wird in eine lokale CSV-Datei, es ist kein Datenbank nötig.
+Vorraussetzungen: Es sollten PHP und mod_rewrite unterstützt werden, das ist bei den vielen Basis-Angeboten von Web-Hostern unterstützt. Gespeichert wird in eine lokale CSV-Datei, es ist keine Datenbank nötig.
 
 # Anmeldungen anschauen
 Die Details der Anmeldungen kann man bei Kenntnis des in SHOWALL_PASSWD angelegten Passwortes anschauen über den Link 'liste?passwd=secret' wobei secret durch das konkrete Passwort ersetzt werden soll.
+
+# Nach erfolgreich gelaufenem Turnier
+Ich empfehle, nachdem das Turnier gelaufen ist, die Dateien der Online-Anmeldung komplett von der Anmeldestelle zu löschen. Ich lege dann dort gern eine index.html-Datei, in der steht "Das Turnier ist gelaufen. War schön!".
+
 
 # Anpassen für neues Design
 * Im Verzeichnis Design werden 3 Dateien benötigt, die angepasst werden können.
