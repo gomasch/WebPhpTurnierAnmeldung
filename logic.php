@@ -76,5 +76,3 @@ $f3->route('GET /liste',
 
 // START
 $f3->run();
-
-?>
