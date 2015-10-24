@@ -1,0 +1,60 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <!--
+Design by Free CSS Templates
+http://www.freecsstemplates.org
+Released for free under a Creative Commons Attribution 2.5 License
+
+Name       : Economics
+Description: A two-column, fixed-width template suitable for business sites and blogs.
+Version    : 1.0
+Released   : 20080116
+
+-->
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8"/>
+    <title>Schweriner Turnier</title>
+    <meta name="keywords" content=""/>
+    <meta name="description" content=""/>
+    <link href="style.css" rel="stylesheet" type="text/css"
+      media="screen"/>
+  </head>
+  <body>
+    <div id="header">
+      <div id="logo">
+        <h1><a href="index.html">{{ @TURNIER_NAME }}</a></h1>
+        <h2>{{ @TURNIER_BESCHREIBUNG }}<br>
+        </h2>
+      </div>
+      <div id="splash"></div>
+      <div id="menu">
+        <ul>
+          <li><a href="." accesskey="1" title="">Ausschreibung</a></li>
+          <li class="current_page_item"><a href="anmeldung"
+              accesskey="2" title="">Voranmelden</a></li>
+          <li><a href="liste" accesskey="3" title="">Liste der
+              VORANGEMELDETEN Spieler</a></li>
+        </ul>
+      </div>
+    </div>
+    <div id="wrapper">
+      <div id="page">
+        <p><br/>
+          {{ @MAIN_CONTENT }}
+          {{ @MAIN_CONTENT_RAW | raw }}<br/>
+        </p>
+        <div id="sidebar">
+          <ul>
+            <li><br>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <div id="footer">
+      <p class="legal">Foto (c) Martin Schmidt</p>
+      <p class="credit">Designed by <a
+          href="http://www.freecsstemplates.org/">Free CSS Templates</a>.</p>
+    </div>
+  </body>
+</html>
