@@ -26,16 +26,20 @@ Vorraussetzungen: Es sollten PHP und mod_rewrite unterstützt werden, das ist be
 Die Details der Anmeldungen kann man bei Kenntnis des in SHOWALL_PASSWD angelegten Passwortes anschauen über den Link 'liste?passwd=secret' wobei secret durch das konkrete Passwort ersetzt werden soll.
 
 # Anpassen für neues Design
-* template_index.html template_anmeldung.html template_list.html anpassen für anderes Layout. Dabei beachten: 
-  * Titel sollte lauten: {{ @TURNIER_NAME }}
-  * Als Überschrift {{ @TURNIER_NAME }} angeben und als Untertitel dazu {{ @TURNIER_BESCHREIBUNG }}.
-  *
-* template_anmeldung.html und template_list.html anpassen. Dabei beachten: 
-  * Titel sollte lauten: {{ @TURNIER_NAME }}
-  * Als Überschrift {{ @TURNIER_NAME }} angeben und als Untertitel dazu {{ @TURNIER_BESCHREIBUNG }}.
-  * Der Abschnitt für die Daten (Anmeldung bzw. Tabelle) bitte so füllen: {{ @MAIN_CONTENT }} {{ @MAIN_CONTENT_RAW | raw }}
-* Zusätzliche Dateien daneben legen (z.B. Bilder und CSS-Dateien), bitte OHNE Unterordner.
-* Anschauen kann man die einzelnen Html-Dateien direkt im Browser lokal ohne Webserver.
+* Im Verzeichnis Design werden 3 Dateien benötigt, die angepasst werden können.
+  * template_index.html soll den Ausschreibungstext enthalten. Bei Anpassungen bitte beachten:
+    * Titel sollte lauten: {{ @TURNIER_NAME }}
+    * Als Überschrift {{ @TURNIER_NAME }} angeben und als Untertitel dazu {{ @TURNIER_BESCHREIBUNG }}.
+  * template_anmeldung.html wird mit dem Anmelde-Formular durch die Logik gefüllt. Bei Anpassungen bitte beachten: 
+    * Titel sollte lauten: {{ @TURNIER_NAME }}
+    * Als Überschrift {{ @TURNIER_NAME }} angeben und als Untertitel dazu {{ @TURNIER_BESCHREIBUNG }}.
+    * Der Abschnitt für das Formular soll enthalten: {{ @MAIN_CONTENT }} {{ @MAIN_CONTENT_RAW | raw }}
+  * template_list.html wird mit der Tabelle durch die Logik gefüllt. Bei Anpassungen bitte beachten: 
+    * Titel sollte lauten: {{ @TURNIER_NAME }}
+    * Als Überschrift {{ @TURNIER_NAME }} angeben und als Untertitel dazu {{ @TURNIER_BESCHREIBUNG }}.
+    * Der Abschnitt für die Daten soll enthalten: {{ @MAIN_CONTENT }} {{ @MAIN_CONTENT_RAW | raw }}
+* Zusätzliche Dateien können direkt daneben legen, z.B. Bilder und CSS-Dateien. Bitte OHNE Unterordner.
+* Zum Bearbeiten und Testen kann man die einzelnen Html-Dateien direkt im Browser lokal anschauen, ohne Webserver.
 
 # Einschränkungen
 * Allgemein gilt:
@@ -43,11 +47,11 @@ Die Details der Anmeldungen kann man bei Kenntnis des in SHOWALL_PASSWD angelegt
   * Es wird angenommen, dass nur wenige Personen pro Tag sich anmelden und praktisch nie zwei Leute exakt gleichzeitig auf "Absenden" drücken.
   * Basis ist nun das PHP Microframework F3 http://fatfreeframework.com/. Es wurden einfach die zwei verwendeten PHP-Dateien hier direkt eingebunden, ohne Management der Abhängigkeiten durch Composer beispielsweise.
 * Sicherheit: 
-  * Die Eingaben werden gefiltert, d.h. durch die Anmeldung kann (hoffentlich) kein HTML/Javascript-Code in die Anmeldung eingeschlichen werden.
   * Es gibt keine Überprüfung auf Plausibilität oder Duplikate. D.h. Leute können bewusst falsche Angaben machen oder die Anmeldung mit sinnlosen Daten fluten und stören.
   * Es gibt keinen Schutz gegen DDOS oder gegen automatisierte falsche Anmeldungen.
+  * Die Eingaben werden gefiltert, d.h. durch die Anmeldung kann (hoffentlich) kein HTML/Javascript-Code in die Anmeldung eingeschlichen werden.
 
-# Geschichte
+# Herkunft und bisherige Verwendung
   * Die allererste Version (noch ohne F3) wurde von Stefan Reinke nach Vorgaben von Martin Schmidt für mvgo.de vor vielen Jahren (ca. 2008?) programmiert. Dieser Basis-Code wurde für viele Go-Turniere in M/V 2008-2015 von Martin angepasst und eingesetzt.
-  * Diese Version ist der Versuch, die Code-Basis zu modernisieren, Design- und Logik-Anpassungen einfacher vornehmen zu können.
-  * Da eine Online-Anmeldung durchaus etwas Arbeit machen kann, wird dieser Quellcode öffentlich und frei verwendbar auf GitHub verfügbar gemacht. 
+  * Diese Version ist der Versuch von Martin, die Code-Basis zu modernisieren, um Design- und Logik-Anpassungen einfacher vornehmen zu können.
+  * Da eine Online-Anmeldung durchaus etwas Arbeit machen kann, wird dieser neue Quellcode öffentlich und frei verwendbar auf GitHub verfügbar gemacht. 
