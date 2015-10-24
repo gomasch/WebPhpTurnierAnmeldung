@@ -40,6 +40,7 @@ Die Details der Anmeldungen kann man bei Kenntnis des in SHOWALL_PASSWD angelegt
     * Der Abschnitt für die Daten soll enthalten: {{ @MAIN_CONTENT }} {{ @MAIN_CONTENT_RAW | raw }}
 * Zusätzliche Dateien können direkt daneben legen, z.B. Bilder und CSS-Dateien. Bitte OHNE Unterordner.
 * Zum Bearbeiten und Testen kann man die einzelnen Html-Dateien direkt im Browser lokal anschauen, ohne Webserver.
+* Es sind mehrere funktionierende Beispiel-Designs als Beispiel verfügbar (designschwerin etc.). Die Logik erwartet die Dateien im Verzeichnis "design".
 
 # Einschränkungen
 * Allgemein gilt:
