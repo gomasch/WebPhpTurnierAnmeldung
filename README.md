@@ -1,5 +1,5 @@
 # WebPhpTurnierAnmeldung
-Simple PHP sign up site for go turnament / Einfache PHP-Webseite für Go-Turnier mit Online-Anmeldung 
+Simple PHP sign up site for a Go game tournament / Einfache PHP-Webseite für Online-Anmeldung bei einem Go-Turnier 
 
 # Übersicht
 Dies ist PHP-Quellcode für eine einfache Webseite mit Online-Anmeldung für ein Go-Turnier.
