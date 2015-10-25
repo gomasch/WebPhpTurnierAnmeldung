@@ -15,11 +15,12 @@ Dies ist PHP-Quellcode für eine einfache Webseite mit Online-Anmeldung für ein
   Standardmäßig wird z.B. nicht nach dem Übernachtungswunsch gefragt und auch nicht nach Seminar-Teilnahme. Das ist z.B. beim Schweriner Turnier nötig, siehe auskommentierte Zeilen.
 
 # Hochladen
-Nach den Anpassungen sollten hochgeladen werden: 
+Nach den Anpassungen sollten hochgeladen werden:
+
 * .htaccess-Datei
-* .php-Dateien
+* .php-Dateien aus dem Wurzelverzeichnis
 * lib-Verzeichnis
-* design-Verzeichnis (inkl. deiner Anpassungen)
+* design-Verzeichnis (inkl. deiner Anpassungen; bei den Zugriffsrechten aufpassen, dass die Dateien hier öffentlich lesbar sind.)
 
 Vorraussetzungen: Es sollten PHP und mod_rewrite unterstützt werden, das ist bei den vielen Basis-Angeboten von Web-Hostern unterstützt. Gespeichert wird in eine lokale CSV-Datei, es ist keine Datenbank nötig.
 
@@ -28,7 +29,6 @@ Die Details der Anmeldungen kann man bei Kenntnis des in SHOWALL_PASSWD angelegt
 
 # Nach erfolgreich gelaufenem Turnier
 Ich empfehle, nachdem das Turnier gelaufen ist, die Dateien der Online-Anmeldung komplett von der Anmeldestelle zu löschen. Ich lege dann dort gern eine index.html-Datei, in der steht "Das Turnier ist gelaufen. War schön!".
-
 
 # Anpassen für neues Design
 * Im Verzeichnis Design werden 3 Dateien benötigt, die angepasst werden können.
@@ -47,15 +47,24 @@ Ich empfehle, nachdem das Turnier gelaufen ist, die Dateien der Online-Anmeldung
 * Zum Bearbeiten und Testen kann man die einzelnen Html-Dateien direkt im Browser lokal anschauen, ohne Webserver.
 * Es sind mehrere funktionierende Beispiel-Designs als Beispiel verfügbar (designschwerin etc.). Die Logik erwartet die Dateien im Verzeichnis "design".
 
-# Einschränkungen
-* Allgemein gilt:
-  * Dies ist für kleine Turniere mit wenigen Anmeldungen (unter 200) gedacht.
-  * Es wird angenommen, dass nur wenige Personen pro Tag sich anmelden und praktisch nie zwei Leute exakt gleichzeitig auf "Absenden" drücken.
-  * Basis ist nun das PHP Microframework F3 http://fatfreeframework.com/. Es wurden einfach die zwei verwendeten PHP-Dateien hier direkt eingebunden, ohne Management der Abhängigkeiten durch Composer beispielsweise.
-* Sicherheit: 
-  * Es gibt keine Überprüfung auf Plausibilität oder Duplikate. D.h. Leute können bewusst falsche Angaben machen oder die Anmeldung mit sinnlosen Daten fluten und stören.
-  * Es gibt keinen Schutz gegen DDOS oder gegen automatisierte falsche Anmeldungen.
-  * Die Eingaben werden gefiltert, d.h. durch die Anmeldung kann (hoffentlich) kein HTML/Javascript-Code in die Anmeldung eingeschlichen werden.
+# Hinweise und Einschränkungen
+Allgemein gilt:
+
+* Dies ist für kleine Turniere mit wenigen Anmeldungen (unter 200) gedacht.
+* Es wird angenommen, dass nur wenige Personen pro Tag sich anmelden und praktisch nie zwei Leute exakt gleichzeitig auf "Absenden" drücken.
+* Unbedingt vor der Freigabe intensiv testen.
+* Basis ist nun das PHP Microframework F3 http://fatfreeframework.com/. Es wurden einfach die zwei verwendeten PHP-Dateien hier direkt eingebunden,
+  ohne Management der Abhängigkeiten durch Composer beispielsweise.
+* Nicht wundern: Bei Benutzung online wird ein tmp-Unterverzeichnis angelegt.
+  Diese Dateien werden intern für die Darstellung verwendet und können ohne Probleme gelöscht werden, da sie wenn nötig neu angelegt werden.
+* Die Menge der abgefragten Daten kann/sollte nicht im Nachhinein geändert werden, wenn die Anmeldung schon läuft und Leute ihre Daten angepasst haben.
+  Sollte dies dennoch notwendig werden, dann muss die CSV-Datei mit den alten Anmeldungen manuell angepasst werden.
+
+Sicherheit: 
+
+* Es gibt keine Überprüfung auf Plausibilität oder Duplikate. D.h. Leute können bewusst falsche Angaben machen oder die Anmeldung mit sinnlosen Daten fluten und stören.
+* Es gibt keinen Schutz gegen DDOS oder gegen automatisierte falsche Anmeldungen.
+* Die Eingaben werden gefiltert, d.h. durch die Anmeldung kann (hoffentlich) kein HTML/Javascript-Code in die Anmeldung eingeschlichen werden.
 
 # Herkunft und bisherige Verwendung
   * Die allererste Version (noch ohne F3) wurde von Stefan Reinke nach Vorgaben von Martin Schmidt für mvgo.de vor vielen Jahren (ca. 2008?) programmiert. Dieser Basis-Code wurde für viele Go-Turniere in M/V 2008-2015 von Martin angepasst und eingesetzt.
