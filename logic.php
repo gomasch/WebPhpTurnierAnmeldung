@@ -46,7 +46,7 @@ $f3->route(
 $f3->route('GET /anmeldung',
     function($f3) 
     {
-        require('logic_anmeldung.php');
+        require('logic_pages.php');
         $f3->set('MAIN_CONTENT_RAW', anmeldungFormular($f3)); // ohne escaping
     	echo Template::instance()->render('design/template_anmeldung.html');
     }
@@ -57,7 +57,7 @@ $f3->route(
     'POST /anmeldung',
     function($f3) 
     {
-        require('logic_anmeldung.php');
+        require('logic_pages.php');
         $f3->set('MAIN_CONTENT_RAW', anmeldungAuswerten($f3)); // ohne escaping
     	echo Template::instance()->render('design/template_anmeldung.html');
     }
@@ -67,7 +67,7 @@ $f3->route(
 $f3->route('GET /liste',
     function($f3) 
     {
-        require('logic_anmeldung.php');
+        require('logic_pages.php');
         $f3->set('MAIN_CONTENT_RAW', tabelleAusgeben($f3)); // ohne escaping
     	echo Template::instance()->render('design/template_list.html');
     }
