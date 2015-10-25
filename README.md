@@ -9,16 +9,17 @@ Dies ist PHP-Quellcode für eine einfache Webseite mit Online-Anmeldung für ein
   * Variable TURNIER_NAME anpassen
   * Variable TURNIER_BESCHREIBUNG anpassen
   * Variable SHOWALL_PASSWD anpassen auf einen frisch ausgewürfelten Wert (nur Buchstaben und Zahlen)
-* Anmeldungslogik eventuell anpassen (Werte und Überprüfungen, Hinweise zu den Preisen bei den einzelnen Angaben) in logic_anmeldungen.php.
 * Design auswählen bzw. anpassen (Dateien im Unterverzeichnis design anpassen oder vorgefertigtes Design nehmen, siehe unten.)
 * Ausschreibungstext in design/template_index.html anpassen und eventuell zusätzliche Dateien (z.B. PDF-Version der Ausschreibung) im design-Verzeichnis ablegen und verlinken vom Anmeldungstext.
+* Anpassen, welche Werte abgefragt werden sollen und eventuell die Hinweise dazu. Schaue dazu in logic_fields.php bei der Funktion constructAllFields().
+  Standardmäßig wird z.B. nicht nach dem Übernachtungswunsch gefragt und auch nicht nach Seminar-Teilnahmen (wie z.B. beim Schweriner Turnier nötig, siehe auskommentierte Zeilen).
 
 # Hochladen
 Nach den Anpassungen sollten hochgeladen werden: 
 * .htaccess-Datei
 * .php-Dateien
-* Lib-Verzeichnis
-* Design-Verzeichnis (inkl. deiner Anpassungen)
+* lib-Verzeichnis
+* design-Verzeichnis (inkl. deiner Anpassungen)
 
 Vorraussetzungen: Es sollten PHP und mod_rewrite unterstützt werden, das ist bei den vielen Basis-Angeboten von Web-Hostern unterstützt. Gespeichert wird in eine lokale CSV-Datei, es ist keine Datenbank nötig.
 

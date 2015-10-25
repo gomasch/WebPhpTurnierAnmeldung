@@ -1,235 +1,92 @@
 <?php
 
-class CsvFile {
-    private $file = '';
+require('logic_fields.php');
 
-    public function __construct($fileName) {
-        $this->file = $fileName;
-    }
+// ------------------------------
+// construct content of HTML pages
+// ------------------------------
 
-    public function exists() {
-        return file_exists($this->file);
-    }
-
-    public function readAll()
-    {
-        $tableData = array();
-
-        $csv = fopen($this->file,'r');
-        while (($data = fgetcsv($csv, 1000, ",")) !== FALSE) {
-            array_push($tableData, $data);
-        }
-        fclose($csv);
-
-        return $tableData;
-    }
-
-    public function writeAll($tableData) {
-        $wrtALL = fopen($this->file,'w');
-        foreach ($tableData as $singleLine) {
-            fputcsv($wrtALL, $singleLine);
-        }
-        fclose($wrtALL);
-    }
-}
-
+/**
+ * Construct HTML for sign up form
+ * @param $f3
+ * @return string html fragment for page content to show
+ */
 function anmeldungFormular($f3)
 {
-    //formular 
+    $fields = constructAllFields($f3->get('RANKS'));
+
+    // build form
+    $formFields = "";
+
+    foreach ($fields as $field) {
+        $formFields .= $field->getFormHtml();
+    }
+
     return "
-<form action='anmeldung' method='post'>
-<table cellspacing='0' cellpadding='5' border='0'>
-    <tr>
-        <td>Vorname: </td>
-        <td border=1><input type='text' name='strPrename' size='25'></td>
-    </tr>
-    <tr>
-        <td>Nachname: </td>
-        <td border=1><input type='text' name='strName' size='25'></td>
-    </tr>
-    <tr>
-        <td>Ort: </td>
-        <td border=1><input type='text' name='strTown' size='25'></td>
-    </tr>
-    <tr>
-        <td>Rang:</td>
-        <td>
-            <select name='strRank' size='1'>
-                <option SELECTED>---</option>
-                " . 
-                implode('', array_map(function($rank) { return "<option>" . $rank . "</option>\n"; }, $f3->get('RANKS'))) . 
-                "
-            </select>
-        </td>
-    </tr>
-    <tr>
-        <td>E-Mail: </td>
-        <td border=1><input type='text' name='strMail' size='25'><br>(zur Kontaktaufnahme, wird nicht mit angezeigt)</td>
-    </tr>
-    <tr>
-        <td valign='top'>DGoB-Mitglied</td>
-        <td>
-            <table>
-            <select name='strDGOB' size='1'>
-                <option SELECTED>---</option>
-                <option value='Ja'>Ja</option>
-                <option value='Nein'>Nein</option>
-            </select><br>(wird nicht mit angezeigt)
-            </table> 
-        </td>
-    </tr>
-    <tr>
-        <td valign='top'>&Uuml;bernachtung:</td>
-        <td>
-            <table>
-            <select name='strSleep' size='1'>
-                <option SELECTED>---</option>
-                <option value='N'>keine</option>
-                <option value='F'>Ab Freitag</option>
-                <option value='S'>Ab Samstag</option>
-            </select><br>(bitte per Mail melden wenn noch jemand mitkommt; wird nicht mit angezeigt)
-            </table>
-        </td>
-    </tr>
-    <tr>
-        <td valign='top'>Teilnahme Turnier</td>
-        <td>
-            <table>
-            <select name='strTurnier' size='1'>
-                <option SELECTED>---</option>
-                <option value='Ja'>Ja</option>
-                <option value='Nein'>Nein</option>
-            </select><br>(Samstag und Sonntag, 0-20 Euro, siehe Ausschreibung)
-            </table> 
-        </td>
-    </tr>
-    <tr>
-        <td valign='top'>Teilnahme Nachmittagsseminar</td>
-        <td>
-            <table>
-            <select name='strNachmittagSem' size='1'>
-                <option SELECTED>---</option>
-                <option value='Ja'>Ja</option>
-                <option value='Nein'>Nein</option>
-            </select><br>(Freitag Nachmittag, 0-15 Euro, siehe Ausschreibung)
-            </table> 
-        </td>
-    </tr>
-    <tr>
-        <td valign='top'>Teilnahme Abendseminar</td>
-        <td>
-            <table>
-            <select name='strAbendSem' size='1'>
-                <option SELECTED>---</option>
-                <option value='Ja'>Ja</option>
-                <option value='Nein'>Nein</option>
-            </select><br>(Freitag Abend, 0-15 Euro, siehe Ausschreibung)
-            </table> 
-        </td>
-    </tr>
+<form action='" . $f3->get("URL_2") . "' method='post'>
+<table cellspacing='0' cellpadding='5' border='0'>" . $formFields . "
     <tr>
         <td></td>
-        <td><input type='submit' name='senden' value='Anmelden'></td>
+        <td><input type='submit' value='Anmelden'></td>
     </tr>
 </table>
 </form>";
 }
 
+/**
+ * Construct HTML for evaluating sign up post data (and write it to the CSV file)
+ * @param $f3 object
+ * @return string html fragment for page content to show
+ */
 function anmeldungAuswerten($f3) {
-    $strName    =   sanitize($_POST['strName']);
-    $strPrename =   sanitize($_POST['strPrename']);
-    $strMail    =   sanitize($_POST['strMail']);
-    $strTown    =   sanitize($_POST['strTown']);
-    $strRank    =   sanitize($_POST['strRank']);
-    $strSleep   =   sanitize($_POST['strSleep']);
-    $strDGOB    =   sanitize($_POST['strDGOB']);
-    $strTurnier =   sanitize($_POST['strTurnier']);
-    $strNachmittagSem  = sanitize($_POST['strNachmittagSem']);
-    $strAbendSem  = sanitize($_POST['strAbendSem']);
+    $fields = constructAllFields($f3->get('RANKS'));
 
-    if (    
-        $strName    ==  "" OR 
-        $strPrename ==  "" OR 
-        $strMail    ==  "" OR 
-        $strTown    ==  "" OR 
-        $strRank    ==  "---" OR 
-        $strSleep   ==  "---" OR 
-        $strDGOB    ==  "---" OR 
-        $strTurnier ==  "---" OR 
-        $strNachmittagSem   ==  "---" OR 
-        $strAbendSem    ==  "---"
-        )
-    {   //  variable not set
-        return "<font color='red'>Bitte bei allen Feldern etwas ausw&auml;hlen bzw. eintragen! <a href='javascript:history.back()'>Zur&uuml;ck</a>";
+    // eval POST data
+    $allParsedData = array();
+
+    foreach ($fields as $field) {
+        $parsedData = null;
+        if (! $field->parsePostData($_POST, $parsedData)) {
+            // NOT OK
+            return "<font color='red'>Bitte bei allen Feldern etwas ausw&auml;hlen bzw. eintragen! <a href='javascript:history.back()'>Zur&uuml;ck</a>";
+        }
+
+        array_push($allParsedData, $parsedData);
     }
 
-    // translate sleep status to $strSleepNo, $strSleepF, $strSleepS
-    if ($strSleep == 'F') //sleep friday?
-    {
-        $strSleepF  =   'x';
-        $strSleepS  =   '';
-        $strSleepNo =   '';
-    } elseif ($strSleep == 'S') // sleep saturday
-    {
-        $strSleepF  =   '';
-        $strSleepS  =   'x';
-        $strSleepNo =   '';
-    } else //no sleep!!!
-    {
-        $strSleepF  =   '';
-        $strSleepS  =   '';
-        $strSleepNo =   'x';
-    }
-    //end sleep status
-
-    //get IP adress
+    //get IP adress and time
     $strIP = htmlspecialchars($_SERVER['REMOTE_ADDR']);
-    $strDateAndTime = date("Y-m-d H:i:s");
+    $strDateAndTime = htmlspecialchars(date("Y-m-d H:i:s"));
 
-    // table he
-    $tablehead  =  array(
-        "Nachname", 
-        "Vorname", 
-        "Ort", 
-        "E-Mail", 
-        "DGOB",
-        "Rang", 
-        "keine Übernachtung",
-        "ab Freitag",
-        "ab Samstag",
-        "Teilnahme Turnier",
-        "Teilnahme Nachmittagseminar",
-        "Teilnahme Abendseminar",
-        "Anmelde-IP",
-        "Anmelde-Zeit");
-
+    // Table data
     $tableData = array();
 
+    // get previous table data
     $csvFile = new CsvFile($f3->get('FILENAME_CSVRESULT'));
     if($csvFile->exists()) {   
         // file exists, read all
         $tableData = $csvFile->readAll();
     }
     else {
-        array_push($tableData, $tablehead);
+        // build table head
+        $tableHead  =  array();
+
+        foreach ($fields as $field) {
+            array_push($tableHead, $field->getCsvHeader());
+        }
+
+        // add head
+        array_push($tableData, $tableHead);
     }
 
-    // add new entry
-    $newEntry = array(
-        $strName,
-        $strPrename,
-        $strTown,
-        $strMail,
-        $strDGOB,
-        $strRank,
-        $strSleepNo,
-        $strSleepF,
-        $strSleepS,
-        $strTurnier,
-        $strNachmittagSem,
-        $strAbendSem,
-        $strIP,
-        $strDateAndTime);
+    // build new entry
+    $newEntry = array();
+
+    foreach ($allParsedData as $value) {
+        array_push($newEntry, $value);
+    }
+
+    // add new row
     array_push($tableData, $newEntry);
 
     // sort after rank
@@ -242,26 +99,12 @@ function anmeldungAuswerten($f3) {
     return "<font color='green'>Du hast dich erfolgreich angemeldet <a href='liste'>(Anzeigen)</a></font>";
 }
 
-// this function removes all commas, HTML stuff and limit length
-function sanitize($string)
-{
-    $result = str_replace(",", "", htmlspecialchars($string));
 
-    if (strlen($result) > 50)
-    {   // too big, limit length
-        $result = substr($result, 0, 50);
-    }
-   
-    return $result;
-}
-
-function buildSorterForRank($ranks)
-{
-    return function($a, $b) use ($ranks) {
-        return array_search($a[5], $ranks) - array_search($b[5], $ranks);
-    };
-}
-
+/**
+ * Construct HTML for table of sign up data
+ * @param $f3
+ * @return string html fragment for page content to show
+ */
 function tabelleAusgeben($f3)
 {
     $file = $f3->get('FILENAME_CSVRESULT');
@@ -269,6 +112,7 @@ function tabelleAusgeben($f3)
     if (file_exists($file)) 
     {
         $csvFile = new CsvFile($file);
+        $fields = constructAllFields($f3->get('RANKS'));
 
         $showall = $_GET[$f3->get('SHOWALL_KEY')] == $f3->get('SHOWALL_PASSWD'); // password check to show everything
 
@@ -300,41 +144,34 @@ function tabelleAusgeben($f3)
 
         // read data
         $tableData = $csvFile->readAll();
-        $playerCount = count($tableData);
+
+        $rowCount = count($tableData);
+        $playerCount = $rowCount - 1; // without header
 
         $strOutput .= "<table border='1' cellspacing='0' cellpadding='3' bordercolor='#000000'>";
 
         $rowIndex = 0;
         //reading csv-file
         foreach ($tableData as $data) {
-            //first field in csv-file is the same as $data[0], 
-            $strOutput    .=  "<tr>";
-            $strOutput    .=  "<td width='100'>".$data[0]."&nbsp;</td>";//Name
-            $strOutput    .=  "<td width='100'>".$data[1]."&nbsp;</td>";//Vorname
-            $strOutput    .=  "<td width='100'>".$data[2]."&nbsp;</td>";//Stadt
-            if ($showall)
-            {
-                $strOutput    .=  "<td width='100'>".$data[3]."</td>";//E-Mail
-                $strOutput    .=  "<td width='100'>".$data[4]."&nbsp;</td>";//DGOB
+            $strOutput .=  "<tr>";
+
+            // data field
+            foreach ($fields as $field) {
+                $parsedData = array_shift($data);
+
+                if ($showall || $field->isPublic()) {
+                    // show this
+                    $strOutput .= "<td>" . $parsedData . "&nbsp;</td>";
+                }
             }
-            $strOutput    .=  "<td width='30'>".$data[5]."&nbsp;</td>";//Rang
+
             if ($showall)
             {
-                $strOutput    .=  "<td align='center' width='50'>".$data[6]."&nbsp;</td>";//keine Übernachtung
-                $strOutput    .=  "<td align='center' width='50'>".$data[7]."&nbsp;</td>";//Übernachtung ab Freitag
-                $strOutput    .=  "<td align='center' width='50'>".$data[8]."&nbsp;</td>";//Übernachtung ab Samstag
-            }
-            $strOutput    .=  "<td width='30'>".$data[9]."&nbsp;</td>";//Teilnahme Turnier
-            $strOutput    .=  "<td width='30'>".$data[10]."&nbsp;</td>";//Teilnahme Nachmittagseminar
-            $strOutput    .=  "<td width='30'>".$data[11]."&nbsp;</td>";//Teilnahme Abendseminar
-            if ($showall)
-            {
-                $strOutput    .=  "<td align='center' width='50'>".$data[12]."&nbsp;</td>";//IP
-                $strOutput    .=  "<td align='center' width='50'>".$data[13]."&nbsp;</td>";//Datum und Zeit
+                // show remove column
                 if ($rowIndex > 0) {
                     $strOutput .=  "<td><a href='" . $f3->get('URL_3') . "?" . 
                         $f3->get('SHOWALL_KEY') . "=" . $_GET[$f3->get('SHOWALL_KEY')] . "&" . 
-                        "del=" . $rowIndex . ";" . $playerCount."'>L&ouml;schen</a></td>";
+                        "del=" . $rowIndex . ";" . $rowCount . "'>L&ouml;schen</a></td>";
                 }
                 else {
                     $strOutput .=  "<td>Bearbeiten</td>";
@@ -346,11 +183,11 @@ function tabelleAusgeben($f3)
         }
         $strOutput    .=  "</table>";
         
-        $strOutput .= "<br>Es sind $playerCount Spieler angemeldet.\n";
+        $strOutput .= "<br>Es " . ($playerCount == 1 ? "ist" : "sind" ) . " $playerCount Spieler angemeldet.\n";
         
         if ($showall)
         {
-            $strOutput .= "<p>Daten als reine csv-datei: <hr><pre>\n";
+            $strOutput .= "<br><br></bt><p>Daten als reine csv-datei: <hr><pre>\n";
             $csv    =   fopen($file,'r');
             $strOutput .= fread($csv, filesize($file));
             fclose ($csv);
@@ -359,5 +196,6 @@ function tabelleAusgeben($f3)
     } else {
         $strOutput = "noch ist niemand angemeldet.";
     }
+
     return $strOutput;
 }
