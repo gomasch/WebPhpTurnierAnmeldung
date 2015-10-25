@@ -12,7 +12,7 @@ Dies ist PHP-Quellcode für eine einfache Webseite mit Online-Anmeldung für ein
 * Design auswählen bzw. anpassen (Dateien im Unterverzeichnis design anpassen oder vorgefertigtes Design nehmen, siehe unten.)
 * Ausschreibungstext in design/template_index.html anpassen und eventuell zusätzliche Dateien (z.B. PDF-Version der Ausschreibung) im design-Verzeichnis ablegen und verlinken vom Anmeldungstext.
 * Anpassen, welche Werte abgefragt werden sollen und eventuell die Hinweise dazu. Schaue dazu in logic_fields.php bei der Funktion constructAllFields().
-  Standardmäßig wird z.B. nicht nach dem Übernachtungswunsch gefragt und auch nicht nach Seminar-Teilnahmen (wie z.B. beim Schweriner Turnier nötig, siehe auskommentierte Zeilen).
+  Standardmäßig wird z.B. nicht nach dem Übernachtungswunsch gefragt und auch nicht nach Seminar-Teilnahme. Das ist z.B. beim Schweriner Turnier nötig, siehe auskommentierte Zeilen.
 
 # Hochladen
 Nach den Anpassungen sollten hochgeladen werden: 
