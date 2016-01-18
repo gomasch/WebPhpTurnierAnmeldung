@@ -12,16 +12,16 @@
   <body>
     <div id="header">
       <div id="logo">
-        <h1><a href="%7B%7B%20@URL_1%20%7D%7D">{{ @TURNIER_NAME }}</a></h1>
+        <h1><a href="{{ @URL_1 }}">{{ @TURNIER_NAME }}</a></h1>
         <h2>{{ @TURNIER_BESCHREIBUNG }}</h2>
       </div>
       <div id="splash"></div>
       <div id="menu">
         <ul>
           <li class="current_page_item"><a
-              href="%7B%7B%20@URL_1%20%7D%7D" accesskey="1" title="">Ausschreibung</a></li>
-          <li><a href="%7B%7B%20@URL_2%20%7D%7D" accesskey="2" title="">Voranmelden</a></li>
-          <li><a href="%7B%7B%20@URL_1%20%7D%7D" accesskey="3" title="">Liste
+              href="{{ @URL_1 }}" accesskey="1" title="">Ausschreibung</a></li>
+          <li><a href="{{ @URL_2 }}" accesskey="2" title="">Voranmelden</a></li>
+          <li><a href="{{ @URL_3 }}" accesskey="3" title="">Liste
               der VORANGEMELDETEN Spieler</a></li>
         </ul>
       </div>
