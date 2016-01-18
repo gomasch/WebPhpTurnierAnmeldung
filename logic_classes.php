@@ -91,10 +91,7 @@ class TextField implements IDataField{
     var $CsvHeader = "";
     var $IsPublic = false;
     var $OptionalComment = "";
-    /**
-     * @var
-     */
-    private $optionalComment;
+    var $CanBeEmpty = false;
 
     /**
      * TextFeld constructor.
@@ -104,13 +101,14 @@ class TextField implements IDataField{
      * @param $isPublic bool is it hidden?
      * @param $optionalComment string to show in the form after the input field
      */
-    public function __construct($title, $formId, $csvHeader, $isPublic = true, $optionalComment = "")
+    public function __construct($title, $formId, $csvHeader, $isPublic = true, $optionalComment = "", $canBeEmpty = false)
     {
         $this->Title = $title;
         $this->FormId = $formId;
         $this->CsvHeader = $csvHeader;
         $this->IsPublic = $isPublic;
-        $this->optionalComment = $optionalComment;
+        $this->OptionalComment = $optionalComment;
+        $this->CanBeEmpty = $canBeEmpty;
     }
 
     public function getFormHtml()
@@ -129,7 +127,7 @@ class TextField implements IDataField{
         if ($strValue == "")
         {   // empty
             $parsedData = "";
-            return false;
+            return $this->CanBeEmpty;
         }
         else
         {   // not empty - fine
@@ -160,10 +158,6 @@ class EnumField implements IDataField{
     var $CsvHeader = "";
     var $IsPublic = false;
     var $OptionalComment = "";
-    /**
-     * @var
-     */
-    private $optionalComment;
 
     /**
      * TextFeld constructor.
@@ -183,7 +177,7 @@ class EnumField implements IDataField{
         $this->FormId = $formId;
         $this->CsvHeader = $csvHeader;
         $this->IsPublic = $isPublic;
-        $this->optionalComment = $optionalComment;
+        $this->OptionalComment = $optionalComment;
     }
 
     public function getFormHtml()
