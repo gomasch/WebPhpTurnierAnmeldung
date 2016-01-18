@@ -19,7 +19,7 @@ function constructAllFields($goRanks)
         new TextField("Nachname", "strFamilyName", "Nachname"),
         new TextField("Ort", "strTown", "Ort"),
         new EnumField("Rang", $goRanks, true, "strRank", "Rang"), // INDEX OF RANG: 3
-        new TextField("E-Mail", "strMail", "Nachname", false, "<br>(zur Kontaktaufnahme, wird nicht mit angezeigt)"),
+        new TextField("E-Mail", "strMail", "Mail", false, "<br>(zur Kontaktaufnahme, wird nicht mit angezeigt)"),
         new EnumField("DGoB-Mitglied", array("Ja", "Nein"), false, "strDGoB", "DGoB", false, "<br>(wird nicht mit angezeigt)"),
 
         // Auskommentieren, wenn man die Übernachtung nicht abfragen möchte:
