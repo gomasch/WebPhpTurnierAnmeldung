@@ -19,10 +19,9 @@
       <div id="splash"></div>
       <div id="menu">
         <ul>
-          <li class="current_page_item"><a href="."
-              accesskey="1" title="">Ausschreibung</a></li>
-          <li><a href="anmeldung" accesskey="2" title="">Voranmelden</a></li>
-          <li><a href="liste" accesskey="3" title="">Liste der VORANGEMELDETEN Spieler</a></li>
+          <li class="current_page_item"><a href="{{ @URL_1 }}" accesskey="1" title="">Ausschreibung</a></li>
+          <li><a href="{{ @URL_2 }}" accesskey="2" title="">Voranmelden</a></li>
+          <li><a href="{{ @URL_3 }}" accesskey="3" title="">Liste der VORANGEMELDETEN Spieler</a></li>
         </ul>
       </div>
     </div>
@@ -35,11 +34,10 @@
           align="CENTER"> <font face="Times New Roman, serif"><font size="5"><b>Deutschlandpokal-Turnier und Go-Seminare</b></font></font></p>
         <p class="western" style="margin-bottom: 0cm; line-height: 150%"
           align="CENTER"> <font face="Times New Roman, serif"><font size="5"><b>vom X. bis Y. Monat 20XY</b></font></font></p>
-        <p><a href="Ausschreibung_Schweriner_Turnier_2015.pdf">Ausschreibung
+        <p><a href="Ausschreibung.pdf">Ausschreibung
 
             als PDF</a><br>
-          <a href="anmeldung">HIER ONLINE VORANMELDEN</a><br>
-          <a href="Ausschreibung.pdf"></a></p>
+          <a href="{{ @URL_2 }}">HIER ONLINE VORANMELDEN</a><br>
         </div>
     </div>
     <div id="footer">
