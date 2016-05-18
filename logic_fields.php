@@ -27,9 +27,9 @@ function constructAllFields($goRanks)
 
         // Folgende 3 Felder auskommentieren, wenn es keine Seminare gibt und man nicht unterscheiden möchte, wer zum Turnier kommt und wer zum Seminar
         // Ansonsten: Die Beschreibungen anpassen (Hinweise zum Geld.
-        //new EnumField("Teilnahme Turnier", array("Ja", "Nein"), false, "strTurnier", "Teilname Turnier", true, "<br>(Samstag und Sonntag, 0-20 Euro, siehe Ausschreibung)"),
-        //new EnumField("Teilnahme Nachmittagsseminar", array("Ja", "Nein"), false, "strNachmittagSem", "Teilname Nachmittagsseminar", true, "<br>(Freitag Nachmittag, 0-15 Euro, siehe Ausschreibung)"),
-        //new EnumField("Teilnahme Abendseminar", array("Ja", "Nein"), false, "strAbendSem", "Teilname Abendseminar", true, "<br>Freitag Abend, 0-15 Euro, siehe Ausschreibung)"),
+        //new EnumField("Teilnahme Turnier", array("Ja", "Nein"), false, "strTurnier", "Teilnahme Turnier", true, "<br>(Samstag und Sonntag, 0-20 Euro, siehe Ausschreibung)"),
+        //new EnumField("Teilnahme Nachmittagsseminar", array("Ja", "Nein"), false, "strNachmittagSem", "Teilnahme Nachmittagsseminar", true, "<br>(Freitag Nachmittag, 0-15 Euro, siehe Ausschreibung)"),
+        //new EnumField("Teilnahme Abendseminar", array("Ja", "Nein"), false, "strAbendSem", "Teilnahme Abendseminar", true, "<br>Freitag Abend, 0-15 Euro, siehe Ausschreibung)"),
 
         // IP und Zeit werden gespeichert
         new GenericField(function() { return "";}, function(&$parsedData) { $parsedData = htmlspecialchars($_SERVER['REMOTE_ADDR']); return true;}, "Anmelde-IP", false),
